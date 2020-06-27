@@ -1,4 +1,4 @@
-import TreeNode from './entities/TreeNode'
+import TreeNode from './entities/TreeNode/TreeNode'
 
 export default class WorkflowBuilder {
   build(root: TreeNode): TreeNode {
