@@ -26,15 +26,15 @@ export default class TreeTransformer {
 
   static mapToTree(data: Map): TreeNode | null {
     let idIndex = 1
-    const nodeArray: NodeMap = {}
+    const createdNodes: NodeMap = {}
 
     function createNode(key: MapKey) {
       const node = new TreeNode({ id: idIndex++ })
-      const values = data[key] || []
+      const childrenKeys = data[key] || []
 
-      nodeArray[key] = node
-      node.children = values.map((k: MapKey) => {
-        const nodeFound = nodeArray[k]
+      createdNodes[key] = node
+      node.children = childrenKeys.map((k: MapKey) => {
+        const nodeFound = createdNodes[k]
 
         return nodeFound || createNode(k)
       })
