@@ -18,12 +18,12 @@ export default class TreeNode {
   public id: number
   public pos = new Position()
   public weight = 1
-  public parent: TreeNode[]
+  public parents: TreeNode[]
   public children: TreeNode[]
 
   constructor(treeNodeData?: TreeNodeData) {
     this.id = treeNodeData?.id || -1
-    this.parent = treeNodeData?.parent || []
+    this.parents = treeNodeData?.parent || []
     this.children = treeNodeData?.children || []
   }
 
@@ -45,5 +45,24 @@ export default class TreeNode {
     }
 
     return lastChild
+  }
+
+  firstParent(): TreeNode {
+    const firstParent = this.parents[0]
+
+    if (!firstParent) {
+      throw new NoSuchElementException('No Parent')
+    }
+    return firstParent
+  }
+
+  lastParent(): TreeNode {
+    const lastParent = this.parents[this.parents.length - 1]
+
+    if (!lastParent) {
+      throw new NoSuchElementException('No Parent')
+    }
+
+    return lastParent
   }
 }
