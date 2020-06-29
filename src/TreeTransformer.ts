@@ -38,6 +38,7 @@ export default class TreeTransformer {
 
         return nodeFound || createNode(k)
       })
+      node.children.forEach((n) => n.parents.push(node))
 
       return node
     }
