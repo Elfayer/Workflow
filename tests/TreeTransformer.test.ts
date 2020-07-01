@@ -2,9 +2,11 @@ import TreeTransformer from '../src/TreeTransformer'
 import TreeNode from '../src/entities/TreeNode/TreeNode'
 
 describe('TreeTransformer', () => {
-  describe('keyMapToTree()', () => {
-    it('should return null if input is empty', () => {
-      expect(TreeTransformer.mapToTree({})).toBe(null)
+  describe('mapToTree()', () => {
+    it('should throw if input is empty', () => {
+      expect(() => {
+        TreeTransformer.mapToTree({})
+      }).toThrow()
     })
 
     it('should return a TreeNode for input { 0: null }', () => {
@@ -13,7 +15,7 @@ describe('TreeTransformer', () => {
       expect(rootNode instanceof TreeNode).toBe(true)
     })
 
-    describe('children', () => {
+    describe('children()', () => {
       it('should return a node with 0 children for input { 0: null }', () => {
         const rootNode = TreeTransformer.mapToTree({ 0: null })
 
@@ -69,7 +71,7 @@ describe('TreeTransformer', () => {
       })
     })
 
-    describe('parents', () => {
+    describe('parents()', () => {
       it('should return a node with 0 parents for input { 0: null }', () => {
         const rootNode = TreeTransformer.mapToTree({ 0: null })
 

@@ -24,7 +24,7 @@ export default class TreeTransformer {
     return nodes
   }
 
-  static mapToTree(data: Map): TreeNode | null {
+  static mapToTree(data: Map): TreeNode {
     let idIndex = 1
     const createdNodes: NodeMap = {}
 
@@ -45,10 +45,10 @@ export default class TreeTransformer {
 
     const rootKey = Object.keys(data)[0]
 
-    if (rootKey) {
-      return createNode(rootKey)
+    if (!rootKey) {
+      throw new Error('No root key provided')
     }
 
-    return null
+    return createNode(rootKey)
   }
 }
