@@ -47,7 +47,7 @@ describe('WorkflowBuilder', () => {
       expect(root.weight).toBe(2)
     })
 
-    it('should set leaf children weight to 2 if it has 2 parents', () => {
+    it('should set leaf child weight to 2 if it has 2 parents', () => {
       const workflowBuilder = new WorkflowBuilder()
       const root = TreeTransformer.mapToTree({
         0: [1, 2],

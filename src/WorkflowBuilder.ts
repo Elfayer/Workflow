@@ -10,11 +10,13 @@ export default class WorkflowBuilder {
     node.weight = node.children.length || 1
 
     node.children.forEach((childNode) => this.computeWeight(childNode))
-    const childrenWeight = node.children.reduce(
-      (total, n) => total + n.weight,
-      0
-    )
-    node.weight = childrenWeight > node.weight ? childrenWeight : node.weight
+    const childrenWeight =
+      node.children.reduce((total, n) => total + n.weight, 0) /
+      node.siblings().length
+    const parentsWeight = node.parents.length
+
+    node.weight = Math.max(node.weight, childrenWeight, parentsWeight)
+
     return node
   }
 }
