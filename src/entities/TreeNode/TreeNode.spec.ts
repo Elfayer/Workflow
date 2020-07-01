@@ -1,4 +1,5 @@
 import TreeNode, { NoSuchElementException } from './TreeNode'
+import TreeTransformer from '../../TreeTransformer'
 
 describe('TreeNode', () => {
   describe('firstChild()', () => {
@@ -78,6 +79,32 @@ describe('TreeNode', () => {
       root.parents = [firstParent, lastParent]
 
       expect(root.lastParent()).toBe(lastParent)
+    })
+  })
+
+  describe('siblings()', () => {
+    it('should return itself if it has 0 parent', () => {
+      const node = new TreeNode()
+
+      expect(node.siblings()[0]).toBe(node)
+    })
+
+    it('should return 2 siblings if node has 1 parent with 2 children', () => {
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+      })
+
+      expect(root.firstChild().siblings().length).toBe(2)
+    })
+
+    it('should return 3 siblings if node has 2 parent with 2 children each', () => {
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+        1: [3, 4],
+        2: [4, 5],
+      })
+
+      expect(root.lastChild().firstChild().siblings().length).toBe(3)
     })
   })
 })

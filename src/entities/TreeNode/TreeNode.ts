@@ -65,4 +65,18 @@ export default class TreeNode {
 
     return lastParent
   }
+
+  siblings(): TreeNode[] {
+    if (this.parents.length === 0) {
+      return [this]
+    }
+
+    const siblings = new Set<TreeNode>()
+
+    this.parents.forEach((parent) =>
+      parent.children.forEach((child) => siblings.add(child))
+    )
+
+    return [...siblings]
+  }
 }
