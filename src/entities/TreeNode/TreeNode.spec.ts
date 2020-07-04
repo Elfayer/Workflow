@@ -107,4 +107,28 @@ describe('TreeNode', () => {
       expect(root.lastChild().firstChild().siblings().length).toBe(3)
     })
   })
+
+  describe('siblingsIndex()', () => {
+    it('should return 0 if node is the only sibling', () => {
+      const node = new TreeNode()
+
+      expect(node.siblingsIndex()).toBe(0)
+    })
+
+    it('should return 0 if node is the first sibling', () => {
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+      })
+
+      expect(root.firstChild().siblingsIndex()).toBe(0)
+    })
+
+    it('should return 1 if node is the second sibling', () => {
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+      })
+
+      expect(root.lastChild().siblingsIndex()).toBe(1)
+    })
+  })
 })

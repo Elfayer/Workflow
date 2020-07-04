@@ -79,4 +79,8 @@ export default class TreeNode {
 
     return [...siblings]
   }
+
+  siblingsIndex(): number {
+    return this.siblings().findIndex((node) => this === node)
+  }
 }
