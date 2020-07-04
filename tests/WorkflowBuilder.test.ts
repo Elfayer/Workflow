@@ -60,5 +60,105 @@ describe('WorkflowBuilder', () => {
       const leafNode = root.firstChild().firstChild()
       expect(leafNode.weight).toBe(2)
     })
+
+    it('should set leaf children weight to 1.5 if leaf nodes have 3 parents each', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2, 3],
+        1: [4, 5],
+        2: [4, 5],
+        3: [4, 5],
+      })
+
+      workflowBuilder.build(root)
+
+      const leafNode = root.firstChild().firstChild()
+      expect(leafNode.weight).toBe(1.5)
+    })
+  })
+
+  describe('position computation', () => {
+    it('should position a single node in the middle', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = new TreeNode()
+
+      workflowBuilder.build(node)
+
+      expect(node.pos.x).toBe(110)
+      expect(node.pos.y).toBe(45)
+    })
+
+    it('should position a node with 1 child in the middle on top', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = TreeTransformer.mapToTree({
+        0: [1],
+      })
+
+      workflowBuilder.build(node)
+
+      expect(node.pos.x).toBe(110)
+      expect(node.pos.y).toBe(45)
+    })
+
+    it('should position a child with 1 parent in the middle of its parent', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = TreeTransformer.mapToTree({
+        0: [1],
+      })
+
+      workflowBuilder.build(node)
+
+      expect(node.firstChild().pos.x).toBe(110)
+      expect(node.firstChild().pos.y).toBe(135)
+    })
+
+    it('should position the root node with 2 children in the middle on top', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = TreeTransformer.mapToTree({
+        0: [1, 2],
+      })
+
+      workflowBuilder.build(node)
+
+      expect(node.pos.x).toBe(220)
+      expect(node.pos.y).toBe(45)
+    })
+
+    it('should position the first child with 1 parent and 1 sibling the left most', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = TreeTransformer.mapToTree({
+        0: [1, 2],
+      })
+
+      workflowBuilder.build(node)
+
+      expect(node.firstChild().pos.x).toBe(110)
+      expect(node.firstChild().pos.y).toBe(135)
+    })
+
+    it('should position the last child with 1 parent and 1 sibling the right most', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = TreeTransformer.mapToTree({
+        0: [1, 2],
+      })
+
+      workflowBuilder.build(node)
+
+      expect(node.lastChild().pos.x).toBe(330)
+      expect(node.lastChild().pos.y).toBe(135)
+    })
+
+    it('should position a child relative to its parent', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const node = TreeTransformer.mapToTree({
+        0: [1, 2],
+        2: [3],
+      })
+
+      workflowBuilder.build(node)
+
+      expect(node.lastChild().firstChild().pos.x).toBe(330)
+      expect(node.lastChild().firstChild().pos.y).toBe(225)
+    })
   })
 })
