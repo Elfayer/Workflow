@@ -10,7 +10,7 @@ export class NoSuchElementException extends Error {
 
 export interface TreeNodeData {
   id?: number
-  parent?: TreeNode[]
+  parents?: TreeNode[]
   children?: TreeNode[]
 }
 
@@ -23,7 +23,7 @@ export default class TreeNode {
 
   constructor(treeNodeData?: TreeNodeData) {
     this.id = treeNodeData?.id || -1
-    this.parents = treeNodeData?.parent || []
+    this.parents = treeNodeData?.parents || []
     this.children = treeNodeData?.children || []
   }
 
