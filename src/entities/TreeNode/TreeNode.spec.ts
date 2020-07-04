@@ -2,6 +2,38 @@ import TreeNode, { NoSuchElementException } from './TreeNode'
 import TreeTransformer from '../../TreeTransformer'
 
 describe('TreeNode', () => {
+  describe('hasParents()', () => {
+    it('should return false if node has no parents', () => {
+      const node = new TreeNode()
+
+      expect(node.hasParents()).toBe(false)
+    })
+
+    it('should return true if node has parents', () => {
+      const node = new TreeNode({
+        parents: [new TreeNode()],
+      })
+
+      expect(node.hasParents()).toBe(true)
+    })
+  })
+
+  describe('hasChildren()', () => {
+    it('should return false if node has no children', () => {
+      const node = new TreeNode()
+
+      expect(node.hasChildren()).toBe(false)
+    })
+
+    it('should return true if node has children', () => {
+      const node = new TreeNode({
+        children: [new TreeNode()],
+      })
+
+      expect(node.hasChildren()).toBe(true)
+    })
+  })
+
   describe('firstChild()', () => {
     it('should throw NoSuchElementException if it has 0 children', () => {
       const node = new TreeNode()

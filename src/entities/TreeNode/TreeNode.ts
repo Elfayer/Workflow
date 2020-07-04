@@ -27,6 +27,14 @@ export default class TreeNode {
     this.children = treeNodeData?.children || []
   }
 
+  hasParents(): boolean {
+    return this.parents.length > 0
+  }
+
+  hasChildren(): boolean {
+    return this.children.length > 0
+  }
+
   firstChild(): TreeNode {
     const firstChild = this.children[0]
 
