@@ -131,4 +131,24 @@ describe('TreeNode', () => {
       expect(root.lastChild().siblingsIndex()).toBe(1)
     })
   })
+
+  describe('siblingsWeight()', () => {
+    it('should return 2 if total children weight is 2 while having a total of 2 siblings', () => {
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+        1: [4, 5],
+        2: [4, 5],
+      })
+      expect(root.firstChild().siblingsWeight()).toBe(2)
+    })
+
+    it('should return 2 if total parents weight is 2 while having a total of 2 siblings', () => {
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+        1: [4, 5],
+        2: [4, 5],
+      })
+      expect(root.firstChild().firstChild().siblingsWeight()).toBe(2)
+    })
+  })
 })

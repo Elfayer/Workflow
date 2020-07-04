@@ -83,4 +83,16 @@ export default class TreeNode {
   siblingsIndex(): number {
     return this.siblings().findIndex((node) => this === node)
   }
+
+  siblingsWeight(): number {
+    const parentsTotalWeight = this.parents.reduce(
+      (total, parent) => total + parent.weight,
+      0
+    )
+    const childrenTotalWeight = this.children.reduce(
+      (total, child) => total + child.weight,
+      0
+    )
+    return Math.max(parentsTotalWeight, childrenTotalWeight)
+  }
 }
