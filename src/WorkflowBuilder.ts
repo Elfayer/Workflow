@@ -12,6 +12,8 @@ interface WorkflowOptions {
 export default class WorkflowBuilder {
   private nodeTotalWitdh: number
   private nodeTotalHeight: number
+  private nodeHalfWitdh: number
+  private nodeHalfHeight: number
   private options: WorkflowOptions = {
     nodeHeight: 50,
     nodeWidth: 200,
@@ -29,11 +31,14 @@ export default class WorkflowBuilder {
     this.nodeTotalWitdh = this.options.nodeWidth + 2 * this.options.nodeHMargin
     this.nodeTotalHeight =
       this.options.nodeHeight + 2 * this.options.nodeVMargin
+    this.nodeHalfWitdh = this.nodeTotalWitdh / 2
+    this.nodeHalfHeight = this.nodeTotalHeight / 2
   }
 
   build(root: TreeNode): TreeNode {
     this.computeWeight(root)
     this.computePosition(root, 0)
+    this.positionToChildrenMiddle(root)
     return root
   }
 
@@ -58,12 +63,35 @@ export default class WorkflowBuilder {
   }
 
   private computePositionX(node: TreeNode): void {
-    node.pos.x =
-      (this.nodeTotalWitdh / 2) * node.weight +
-      node.siblingsIndex() * this.nodeTotalWitdh
+    const siblingsIndex = node.siblingsIndex()
+
+    if (siblingsIndex === 0) {
+      if (node.hasParents()) {
+        const firstParent = node.firstParent()
+        const lastParent = node.lastParent()
+
+        node.pos.x =
+          (firstParent.pos.x + lastParent.pos.x) / 2 -
+          this.nodeHalfWitdh * node.siblingsWeight()
+      } else {
+        node.pos.x = 0
+      }
+    } else {
+      const previousSibling = node.siblings()[siblingsIndex - 1]
+      node.pos.x =
+        previousSibling.pos.x + this.nodeHalfWitdh * previousSibling.weight
+    }
+    node.pos.x += this.nodeHalfWitdh * node.weight
   }
 
   private computePositionY(node: TreeNode, depth: number): void {
-    node.pos.y = this.nodeTotalHeight / 2 + this.nodeTotalHeight * depth
+    node.pos.y = this.nodeHalfHeight
+    node.pos.y += this.nodeTotalHeight * depth
+  }
+
+  private positionToChildrenMiddle(node: TreeNode): void {
+    if (node.hasChildren()) {
+      node.pos.x = (node.firstChild().pos.x + node.lastChild().pos.x) / 2
+    }
   }
 }

@@ -160,5 +160,47 @@ describe('WorkflowBuilder', () => {
       expect(node.lastChild().firstChild().pos.x).toBe(330)
       expect(node.lastChild().firstChild().pos.y).toBe(225)
     })
+
+    it('should position a child with 2 parents in the middle below', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+        1: [3],
+        2: [3],
+      })
+
+      workflowBuilder.build(root)
+
+      const node = root.firstChild().firstChild()
+      expect(node.pos.x).toBe(220)
+      expect(node.pos.y).toBe(225)
+    })
+
+    it('should position root node in the middle of its first and last child', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+        1: [3, 4],
+      })
+
+      workflowBuilder.build(root)
+
+      expect(root.pos.x).toBe(385)
+      expect(root.pos.y).toBe(45)
+    })
+
+    it('should position a node spaced out from the other branches', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1, 2],
+        1: [3, 4],
+      })
+
+      workflowBuilder.build(root)
+
+      const node = root.lastChild()
+      expect(node.pos.x).toBe(550)
+      expect(node.pos.y).toBe(135)
+    })
   })
 })
