@@ -37,7 +37,8 @@ export default class WorkflowBuilder {
 
   build(root: TreeNode): TreeNode {
     this.computeWeight(root)
-    this.computePosition(root, 0)
+    this.computeDepthLevel(root)
+    this.computePosition(root)
     this.positionToChildrenMiddle(root)
     return root
   }
@@ -54,11 +55,30 @@ export default class WorkflowBuilder {
     node.weight = Math.max(node.weight, childrenWeight, parentsWeight)
   }
 
-  private computePosition(node: TreeNode, depth: number): void {
+  private computeDepthLevel(root: TreeNode): void {
+    root.depthLevel = 0
+
+    const queue = [root]
+
+    while (queue.length) {
+      const node = queue.shift()
+
+      if (node) {
+        queue.push(
+          ...node.children.map((child) => {
+            child.depthLevel = node.depthLevel + 1
+            return child
+          })
+        )
+      }
+    }
+  }
+
+  private computePosition(node: TreeNode): void {
     this.computePositionX(node)
-    this.computePositionY(node, depth)
+    this.computePositionY(node)
     node.children.forEach((childNode) => {
-      this.computePosition(childNode, depth + 1)
+      this.computePosition(childNode)
     })
   }
 
@@ -84,9 +104,9 @@ export default class WorkflowBuilder {
     node.pos.x += this.nodeHalfWitdh * node.weight
   }
 
-  private computePositionY(node: TreeNode, depth: number): void {
+  private computePositionY(node: TreeNode): void {
     node.pos.y = this.nodeHalfHeight
-    node.pos.y += this.nodeTotalHeight * depth
+    node.pos.y += this.nodeTotalHeight * node.depthLevel
   }
 
   private positionToChildrenMiddle(node: TreeNode): void {

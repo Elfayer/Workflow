@@ -18,6 +18,7 @@ export default class TreeNode {
   public id: number
   public pos = new Position()
   public weight = 1
+  public depthLevel = 0
   public parents: TreeNode[]
   public children: TreeNode[]
 

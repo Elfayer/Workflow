@@ -77,6 +77,43 @@ describe('WorkflowBuilder', () => {
     })
   })
 
+  describe('depthLevel computation', () => {
+    it('should set root node depthLevel to 0', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1],
+      })
+
+      workflowBuilder.build(root)
+
+      expect(root.depthLevel).toBe(0)
+    })
+
+    it(`should set root node's first child depthLevel to 1`, () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1],
+      })
+
+      workflowBuilder.build(root)
+
+      expect(root.firstChild().depthLevel).toBe(1)
+    })
+
+    it(`should set node's depthLevel to its deepest parent + 1`, () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1, 3],
+        1: [2, 3],
+      })
+
+      workflowBuilder.build(root)
+
+      const node = root.firstChild().lastChild()
+      expect(node.depthLevel).toBe(2)
+    })
+  })
+
   describe('position computation', () => {
     it('should position a single node in the middle', () => {
       const workflowBuilder = new WorkflowBuilder()
@@ -201,6 +238,20 @@ describe('WorkflowBuilder', () => {
       const node = root.lastChild()
       expect(node.pos.x).toBe(550)
       expect(node.pos.y).toBe(135)
+    })
+
+    it('should position a node deep if it has a parent 2 levels up', () => {
+      const workflowBuilder = new WorkflowBuilder()
+      const root = TreeTransformer.mapToTree({
+        0: [1, 3],
+        1: [2, 3],
+      })
+
+      workflowBuilder.build(root)
+
+      const node = root.firstChild().lastChild()
+      expect(node.pos.x).toBe(330)
+      expect(node.pos.y).toBe(225)
     })
   })
 })
